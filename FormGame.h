@@ -1,7 +1,10 @@
 #pragma once
 #include <map>
 
+//defined the number of squares
 #define NUMSQUARES 9
+
+//enumerate typed for status of game
 enum GAME_STATUS{OVER,NOTOVER,TIE };
 
 namespace MyTicTacToe {
@@ -129,7 +132,7 @@ namespace MyTicTacToe {
 			// splitContainer1
 			// 
 			this->splitContainer1->Dock = System::Windows::Forms::DockStyle::Bottom;
-			this->splitContainer1->Location = System::Drawing::Point(0, 26);
+			this->splitContainer1->Location = System::Drawing::Point(0, 27);
 			this->splitContainer1->Name = L"splitContainer1";
 			this->splitContainer1->Orientation = System::Windows::Forms::Orientation::Horizontal;
 			// 
@@ -148,8 +151,8 @@ namespace MyTicTacToe {
 			this->splitContainer1->Panel1->Controls->Add(this->panel3);
 			this->splitContainer1->Panel1->Controls->Add(this->panel2);
 			this->splitContainer1->Panel1->Controls->Add(this->panel1);
-			this->splitContainer1->Size = System::Drawing::Size(533, 308);
-			this->splitContainer1->SplitterDistance = 257;
+			this->splitContainer1->Size = System::Drawing::Size(533, 306);
+			this->splitContainer1->SplitterDistance = 255;
 			this->splitContainer1->TabIndex = 0;
 			// 
 			// panel11
@@ -371,7 +374,7 @@ namespace MyTicTacToe {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(533, 334);
+			this->ClientSize = System::Drawing::Size(533, 333);
 			this->Controls->Add(this->splitContainer1);
 			this->Controls->Add(this->menuStrip1);
 			this->Name = L"FormGame";
@@ -740,7 +743,7 @@ private: System::Void panel_Click(System::Object^  sender, System::EventArgs^  e
 	if ((winningMark == "0") || (winningMark == "X"))
 		return OVER;
 
-	if (countSelections == 9)
+	if (countSelections == NUMSQUARES)
 		return TIE;
 
 	//If the above two wont return OVER OR TIE, return NOT OVER
