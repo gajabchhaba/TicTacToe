@@ -27,6 +27,7 @@ namespace MyTicTacToe {
 		{
 			InitializeComponent();
 			InitializeGame();
+			NewGame();
 
 			//
 			//TODO: Add the constructor code here
@@ -66,13 +67,14 @@ namespace MyTicTacToe {
 		System::ComponentModel::Container ^components;
 
 		//Raj - New elements
-		unsigned short int PlayerNumber;
+		unsigned short int PlayerNumber, imageType;
+		Char *Marker;
+
 		System::Drawing::Image ^currentImage, ^o_image, ^x_image, ^o_image_rescaled, ^x_image_rescaled;
 		Dictionary<String^, String^>^ ScoreBoard;
-		unsigned short int countSelections;
+		unsigned short int numberOfMoves;
 		int x1, x2, y1, y2;
 		bool GameOver;
-		unsigned int eventCount;
 		unsigned short int scorePlayer1, scorePlayer2;
 		
 
@@ -82,11 +84,24 @@ namespace MyTicTacToe {
 	private: System::Windows::Forms::TableLayoutPanel^  tableLayoutPanel1;
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::Label^  label3;
-	private: System::Windows::Forms::Panel^  panel11;
-	private: System::Windows::Forms::Label^  label5;
+
+
 	private: System::Windows::Forms::Label^  labelScore2;
 	private: System::Windows::Forms::Label^  labelScore1;
 	private: System::Windows::Forms::ToolStripMenuItem^  resetScoreToolStripMenuItem;
+	private: System::Windows::Forms::Panel^  panel_xo;
+
+	private: System::Windows::Forms::Button^  button_o;
+	private: System::Windows::Forms::Button^  button_x;
+	private: System::Windows::Forms::Label^  label_select_xo;
+	private: System::Windows::Forms::Label^  label_select;
+	private: System::Windows::Forms::Button^  button_player2;
+	private: System::Windows::Forms::Button^  button_player1;
+	private: System::Windows::Forms::Button^  button_start_game;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::Label^  label_weapon_1;
+	private: System::Windows::Forms::Label^  label_weapon_2;
 
 
 	private: System::Windows::Forms::Label^  label1;
@@ -99,15 +114,17 @@ namespace MyTicTacToe {
 		void InitializeComponent(void)
 		{
 			this->splitContainer1 = (gcnew System::Windows::Forms::SplitContainer());
-			this->panel11 = (gcnew System::Windows::Forms::Panel());
-			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->panel10 = (gcnew System::Windows::Forms::Panel());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
-			this->labelScore2 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->labelScore1 = (gcnew System::Windows::Forms::Label());
+			this->labelScore2 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->label_weapon_1 = (gcnew System::Windows::Forms::Label());
+			this->label_weapon_2 = (gcnew System::Windows::Forms::Label());
 			this->panel9 = (gcnew System::Windows::Forms::Panel());
 			this->panel8 = (gcnew System::Windows::Forms::Panel());
 			this->panel7 = (gcnew System::Windows::Forms::Panel());
@@ -117,29 +134,37 @@ namespace MyTicTacToe {
 			this->panel3 = (gcnew System::Windows::Forms::Panel());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->button_start_game = (gcnew System::Windows::Forms::Button());
+			this->panel_xo = (gcnew System::Windows::Forms::Panel());
+			this->button_o = (gcnew System::Windows::Forms::Button());
+			this->button_x = (gcnew System::Windows::Forms::Button());
+			this->label_select_xo = (gcnew System::Windows::Forms::Label());
+			this->label_select = (gcnew System::Windows::Forms::Label());
+			this->button_player2 = (gcnew System::Windows::Forms::Button());
+			this->button_player1 = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->newGameToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->resetScoreToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->BeginInit();
 			this->splitContainer1->Panel1->SuspendLayout();
+			this->splitContainer1->Panel2->SuspendLayout();
 			this->splitContainer1->SuspendLayout();
-			this->panel11->SuspendLayout();
 			this->panel10->SuspendLayout();
 			this->tableLayoutPanel1->SuspendLayout();
+			this->panel_xo->SuspendLayout();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// splitContainer1
 			// 
-			this->splitContainer1->Dock = System::Windows::Forms::DockStyle::Bottom;
-			this->splitContainer1->Location = System::Drawing::Point(0, 27);
+			this->splitContainer1->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->splitContainer1->Location = System::Drawing::Point(0, 24);
 			this->splitContainer1->Name = L"splitContainer1";
 			this->splitContainer1->Orientation = System::Windows::Forms::Orientation::Horizontal;
 			// 
 			// splitContainer1.Panel1
 			// 
 			this->splitContainer1->Panel1->BackColor = System::Drawing::Color::Black;
-			this->splitContainer1->Panel1->Controls->Add(this->panel11);
 			this->splitContainer1->Panel1->Controls->Add(this->panel10);
 			this->splitContainer1->Panel1->Controls->Add(this->tableLayoutPanel1);
 			this->splitContainer1->Panel1->Controls->Add(this->panel9);
@@ -151,29 +176,18 @@ namespace MyTicTacToe {
 			this->splitContainer1->Panel1->Controls->Add(this->panel3);
 			this->splitContainer1->Panel1->Controls->Add(this->panel2);
 			this->splitContainer1->Panel1->Controls->Add(this->panel1);
-			this->splitContainer1->Size = System::Drawing::Size(533, 306);
-			this->splitContainer1->SplitterDistance = 255;
+			// 
+			// splitContainer1.Panel2
+			// 
+			this->splitContainer1->Panel2->Controls->Add(this->button_start_game);
+			this->splitContainer1->Panel2->Controls->Add(this->panel_xo);
+			this->splitContainer1->Panel2->Controls->Add(this->label_select);
+			this->splitContainer1->Panel2->Controls->Add(this->button_player2);
+			this->splitContainer1->Panel2->Controls->Add(this->button_player1);
+			this->splitContainer1->Panel2->Click += gcnew System::EventHandler(this, &FormGame::split2_clicked);
+			this->splitContainer1->Size = System::Drawing::Size(606, 525);
+			this->splitContainer1->SplitterDistance = 287;
 			this->splitContainer1->TabIndex = 0;
-			// 
-			// panel11
-			// 
-			this->panel11->BackColor = System::Drawing::Color::Yellow;
-			this->panel11->Controls->Add(this->label5);
-			this->panel11->Location = System::Drawing::Point(309, 1);
-			this->panel11->Name = L"panel11";
-			this->panel11->Size = System::Drawing::Size(221, 37);
-			this->panel11->TabIndex = 5;
-			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label5->Location = System::Drawing::Point(66, 3);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(76, 24);
-			this->label5->TabIndex = 2;
-			this->label5->Text = L"SCORE";
 			// 
 			// panel10
 			// 
@@ -181,7 +195,7 @@ namespace MyTicTacToe {
 			this->panel10->Controls->Add(this->label1);
 			this->panel10->Location = System::Drawing::Point(309, 153);
 			this->panel10->Name = L"panel10";
-			this->panel10->Size = System::Drawing::Size(221, 101);
+			this->panel10->Size = System::Drawing::Size(294, 101);
 			this->panel10->TabIndex = 4;
 			// 
 			// label1
@@ -190,7 +204,7 @@ namespace MyTicTacToe {
 				static_cast<System::Byte>(0)));
 			this->label1->Location = System::Drawing::Point(0, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(218, 101);
+			this->label1->Size = System::Drawing::Size(294, 101);
 			this->label1->TabIndex = 0;
 			this->label1->Text = L"label1";
 			// 
@@ -198,70 +212,119 @@ namespace MyTicTacToe {
 			// 
 			this->tableLayoutPanel1->BackColor = System::Drawing::Color::Aquamarine;
 			this->tableLayoutPanel1->CellBorderStyle = System::Windows::Forms::TableLayoutPanelCellBorderStyle::Single;
-			this->tableLayoutPanel1->ColumnCount = 2;
+			this->tableLayoutPanel1->ColumnCount = 3;
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				50)));
+				48.48485F)));
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				50)));
-			this->tableLayoutPanel1->Controls->Add(this->labelScore2, 0, 1);
-			this->tableLayoutPanel1->Controls->Add(this->label3, 0, 0);
-			this->tableLayoutPanel1->Controls->Add(this->label4, 1, 0);
-			this->tableLayoutPanel1->Controls->Add(this->labelScore1, 0, 1);
-			this->tableLayoutPanel1->Location = System::Drawing::Point(309, 41);
+				51.51515F)));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Absolute,
+				107)));
+			this->tableLayoutPanel1->Controls->Add(this->label3, 1, 0);
+			this->tableLayoutPanel1->Controls->Add(this->label2, 0, 1);
+			this->tableLayoutPanel1->Controls->Add(this->label5, 0, 2);
+			this->tableLayoutPanel1->Controls->Add(this->label_weapon_1, 1, 2);
+			this->tableLayoutPanel1->Controls->Add(this->label_weapon_2, 2, 2);
+			this->tableLayoutPanel1->Controls->Add(this->labelScore1, 1, 1);
+			this->tableLayoutPanel1->Controls->Add(this->label4, 2, 0);
+			this->tableLayoutPanel1->Controls->Add(this->labelScore2, 2, 1);
+			this->tableLayoutPanel1->Location = System::Drawing::Point(309, 3);
 			this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
-			this->tableLayoutPanel1->RowCount = 2;
+			this->tableLayoutPanel1->RowCount = 3;
 			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
 			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
-			this->tableLayoutPanel1->Size = System::Drawing::Size(221, 106);
+			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 44)));
+			this->tableLayoutPanel1->Size = System::Drawing::Size(297, 144);
 			this->tableLayoutPanel1->TabIndex = 1;
-			// 
-			// labelScore2
-			// 
-			this->labelScore2->AutoSize = true;
-			this->labelScore2->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->labelScore2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->labelScore2->Location = System::Drawing::Point(114, 53);
-			this->labelScore2->Name = L"labelScore2";
-			this->labelScore2->Size = System::Drawing::Size(103, 52);
-			this->labelScore2->TabIndex = 2;
-			this->labelScore2->Text = L"0";
-			this->labelScore2->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(4, 1);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(77, 24);
-			this->label3->TabIndex = 0;
-			this->label3->Text = L"Player 1";
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(114, 1);
+			this->label4->Location = System::Drawing::Point(191, 1);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(77, 24);
 			this->label4->TabIndex = 1;
 			this->label4->Text = L"Player 2";
 			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label3->Location = System::Drawing::Point(95, 1);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(77, 24);
+			this->label3->TabIndex = 0;
+			this->label3->Text = L"Player 1";
+			// 
 			// labelScore1
 			// 
 			this->labelScore1->AutoSize = true;
-			this->labelScore1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->labelScore1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->labelScore1->Location = System::Drawing::Point(4, 53);
+			this->labelScore1->Location = System::Drawing::Point(95, 50);
 			this->labelScore1->Name = L"labelScore1";
-			this->labelScore1->Size = System::Drawing::Size(103, 52);
+			this->labelScore1->Size = System::Drawing::Size(20, 24);
 			this->labelScore1->TabIndex = 3;
 			this->labelScore1->Text = L"0";
 			this->labelScore1->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// labelScore2
+			// 
+			this->labelScore2->AutoSize = true;
+			this->labelScore2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->labelScore2->Location = System::Drawing::Point(191, 50);
+			this->labelScore2->Name = L"labelScore2";
+			this->labelScore2->Size = System::Drawing::Size(20, 24);
+			this->labelScore2->TabIndex = 2;
+			this->labelScore2->Text = L"0";
+			this->labelScore2->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label2->Location = System::Drawing::Point(4, 50);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(56, 20);
+			this->label2->TabIndex = 4;
+			this->label2->Text = L"Score";
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label5->Location = System::Drawing::Point(4, 99);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(75, 20);
+			this->label5->TabIndex = 5;
+			this->label5->Text = L"Weapon";
+			// 
+			// label_weapon_1
+			// 
+			this->label_weapon_1->AutoSize = true;
+			this->label_weapon_1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label_weapon_1->Location = System::Drawing::Point(95, 99);
+			this->label_weapon_1->Name = L"label_weapon_1";
+			this->label_weapon_1->Size = System::Drawing::Size(60, 24);
+			this->label_weapon_1->TabIndex = 6;
+			this->label_weapon_1->Text = L"label6";
+			// 
+			// label_weapon_2
+			// 
+			this->label_weapon_2->AutoSize = true;
+			this->label_weapon_2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label_weapon_2->Location = System::Drawing::Point(191, 99);
+			this->label_weapon_2->Name = L"label_weapon_2";
+			this->label_weapon_2->Size = System::Drawing::Size(60, 24);
+			this->label_weapon_2->TabIndex = 7;
+			this->label_weapon_2->Text = L"label7";
 			// 
 			// panel9
 			// 
@@ -344,6 +407,104 @@ namespace MyTicTacToe {
 			this->panel1->TabIndex = 0;
 			this->panel1->Click += gcnew System::EventHandler(this, &FormGame::panel_Click);
 			// 
+			// button_start_game
+			// 
+			this->button_start_game->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
+			this->button_start_game->BackColor = System::Drawing::Color::MediumSeaGreen;
+			this->button_start_game->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button_start_game->ForeColor = System::Drawing::SystemColors::ControlLightLight;
+			this->button_start_game->Location = System::Drawing::Point(406, 197);
+			this->button_start_game->Name = L"button_start_game";
+			this->button_start_game->Size = System::Drawing::Size(168, 30);
+			this->button_start_game->TabIndex = 4;
+			this->button_start_game->Text = L"Start Game";
+			this->button_start_game->UseVisualStyleBackColor = false;
+			this->button_start_game->Visible = false;
+			this->button_start_game->Click += gcnew System::EventHandler(this, &FormGame::button_start_game_Click);
+			// 
+			// panel_xo
+			// 
+			this->panel_xo->Controls->Add(this->button_o);
+			this->panel_xo->Controls->Add(this->button_x);
+			this->panel_xo->Controls->Add(this->label_select_xo);
+			this->panel_xo->Location = System::Drawing::Point(13, 116);
+			this->panel_xo->Name = L"panel_xo";
+			this->panel_xo->Size = System::Drawing::Size(488, 88);
+			this->panel_xo->TabIndex = 3;
+			this->panel_xo->Visible = false;
+			// 
+			// button_o
+			// 
+			this->button_o->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button_o->Location = System::Drawing::Point(254, 48);
+			this->button_o->Name = L"button_o";
+			this->button_o->Size = System::Drawing::Size(75, 33);
+			this->button_o->TabIndex = 2;
+			this->button_o->Text = L"O";
+			this->button_o->UseVisualStyleBackColor = true;
+			this->button_o->Click += gcnew System::EventHandler(this, &FormGame::button_o_Click);
+			// 
+			// button_x
+			// 
+			this->button_x->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button_x->Location = System::Drawing::Point(108, 48);
+			this->button_x->Name = L"button_x";
+			this->button_x->Size = System::Drawing::Size(60, 33);
+			this->button_x->TabIndex = 1;
+			this->button_x->Text = L"X";
+			this->button_x->UseVisualStyleBackColor = true;
+			this->button_x->Click += gcnew System::EventHandler(this, &FormGame::button_x_Click);
+			// 
+			// label_select_xo
+			// 
+			this->label_select_xo->AutoSize = true;
+			this->label_select_xo->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->label_select_xo->Location = System::Drawing::Point(42, 10);
+			this->label_select_xo->Name = L"label_select_xo";
+			this->label_select_xo->Size = System::Drawing::Size(352, 24);
+			this->label_select_xo->TabIndex = 0;
+			this->label_select_xo->Text = L"Player X, which one do you want to use\?";
+			// 
+			// label_select
+			// 
+			this->label_select->AutoSize = true;
+			this->label_select->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label_select->Location = System::Drawing::Point(135, 2);
+			this->label_select->Name = L"label_select";
+			this->label_select->Size = System::Drawing::Size(207, 24);
+			this->label_select->TabIndex = 2;
+			this->label_select->Text = L"Who would like to start\?";
+			// 
+			// button_player2
+			// 
+			this->button_player2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button_player2->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->button_player2->Location = System::Drawing::Point(248, 55);
+			this->button_player2->Name = L"button_player2";
+			this->button_player2->Size = System::Drawing::Size(94, 41);
+			this->button_player2->TabIndex = 1;
+			this->button_player2->Text = L"Player 2";
+			this->button_player2->UseVisualStyleBackColor = true;
+			this->button_player2->Click += gcnew System::EventHandler(this, &FormGame::button_player2_Click);
+			// 
+			// button_player1
+			// 
+			this->button_player1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button_player1->Location = System::Drawing::Point(109, 55);
+			this->button_player1->Name = L"button_player1";
+			this->button_player1->Size = System::Drawing::Size(105, 41);
+			this->button_player1->TabIndex = 0;
+			this->button_player1->Text = L"Player 1";
+			this->button_player1->UseVisualStyleBackColor = true;
+			this->button_player1->Click += gcnew System::EventHandler(this, &FormGame::button_player1_Click);
+			// 
 			// menuStrip1
 			// 
 			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
@@ -352,7 +513,7 @@ namespace MyTicTacToe {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(533, 24);
+			this->menuStrip1->Size = System::Drawing::Size(606, 24);
 			this->menuStrip1->TabIndex = 1;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -374,19 +535,21 @@ namespace MyTicTacToe {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(533, 333);
+			this->ClientSize = System::Drawing::Size(606, 549);
 			this->Controls->Add(this->splitContainer1);
 			this->Controls->Add(this->menuStrip1);
 			this->Name = L"FormGame";
 			this->Text = L"Tic Tac Toe";
 			this->splitContainer1->Panel1->ResumeLayout(false);
+			this->splitContainer1->Panel2->ResumeLayout(false);
+			this->splitContainer1->Panel2->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->EndInit();
 			this->splitContainer1->ResumeLayout(false);
-			this->panel11->ResumeLayout(false);
-			this->panel11->PerformLayout();
 			this->panel10->ResumeLayout(false);
 			this->tableLayoutPanel1->ResumeLayout(false);
 			this->tableLayoutPanel1->PerformLayout();
+			this->panel_xo->ResumeLayout(false);
+			this->panel_xo->PerformLayout();
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
 			this->ResumeLayout(false);
@@ -396,23 +559,18 @@ namespace MyTicTacToe {
 #pragma endregion
 		void InitializeGame(void)
 		{
-			int k = 0;
-
-			eventCount = 0;
-
-			PlayerNumber = 1;
-			GameOver = false;
-
 			scorePlayer1 = 0;
 			scorePlayer2 = 0;
 
-			this->label1->Text = "Player 1, your turn. Put your \"X\" in one of the boxes";
+			//Initialize Marker
+			if(Marker == nullptr)
+				Marker = new Char[1];
 
+			//Images for x and o
 			o_image_rescaled = gcnew System::Drawing::Bitmap("drawn_o.png");
 			x_image_rescaled = gcnew System::Drawing::Bitmap("drawn_x.png");
-
-			currentImage = x_image_rescaled;
-
+						
+			//Assign text to panels so that we can figure out which panel was clicked by accessing the Text member
 			this->panel1->Text = "panel1";
 			this->panel2->Text = "panel2";
 			this->panel3->Text = "panel3";
@@ -423,8 +581,10 @@ namespace MyTicTacToe {
 			this->panel8->Text = "panel8";
 			this->panel9->Text = "panel9";
 
+			
 			std::map<std::string, int> board;
 			
+			//Dictionary that contains the location=>Marker values
 			ScoreBoard = gcnew Dictionary<String^, String^>();
 			ScoreBoard->Add("Top-Left", " ");
 			ScoreBoard->Add("Top-Mid", " ");
@@ -436,10 +596,29 @@ namespace MyTicTacToe {
 			ScoreBoard->Add("Bottom-Mid", " ");
 			ScoreBoard->Add("Bottom-Right", " ");
 
-			countSelections = 0;
+		}
+
+
+
+		void NewGame()
+		{
+			this->ClientSize = System::Drawing::Size(622, 275);
+			Refresh();
+
+			//Show the player selection panel, and hide the game panel
+			splitContainer1->Panel1Collapsed = true;
+			splitContainer1->Panel2Collapsed = false;
+			panel_xo->Visible = false;
+			button_start_game->Visible = false;
+
+			//Reset variables to 0
+			numberOfMoves = 0;
+			GameOver = false;
+						
+			//imageType = 0, means neither X nor O selected
+			imageType = 0;
 
 			//Reset Background images
-			
 			panel1->BackgroundImage = nullptr;
 			panel2->BackgroundImage = nullptr;
 			panel3->BackgroundImage = nullptr;
@@ -449,14 +628,23 @@ namespace MyTicTacToe {
 			panel7->BackgroundImage = nullptr;
 			panel8->BackgroundImage = nullptr;
 			panel9->BackgroundImage = nullptr;
-		
 
-			//Reset drawings
+			//Reset scoreboard
+			ScoreBoard["Top-Left"]= " ";
+			ScoreBoard["Top-Mid"] = " ";
+			ScoreBoard["Top-Right"] = " ";
+			ScoreBoard["Mid-Left"] = " ";
+			ScoreBoard["Mid-Mid"] = " ";
+			ScoreBoard["Mid-Right"] = " ";
+			ScoreBoard["Bottom-Left"] = " ";
+			ScoreBoard["Bottom-Mid"] = " ";
+			ScoreBoard["Bottom-Right"] = " ";
+
+			//Reset drawings - anything that was drawn before is removed
 			clear_graphics();
-			
+
 			//Allow clicks
 			enable_panels();
-
 			
 		}
 
@@ -469,10 +657,8 @@ private: System::Void panel_Click(System::Object^  sender, System::EventArgs^  e
 
 	if (!GameOver)
 	{
-		//this->label2->Text = System::Convert::ToString(++countSelections);
-
 		//Increment number of moves
-		++countSelections;
+		++numberOfMoves;
 
 		if (panel->Text == "panel1")
 			ScoreBoard["Top-Left"] = (PlayerNumber == 1 ? "X" : "O");
@@ -507,71 +693,61 @@ private: System::Void panel_Click(System::Object^  sender, System::EventArgs^  e
 		//Disable the panel so that it cannot be clicked again.
 		panel->Enabled = false;
 
-		//Call the paint handler to draw either X or O
-
-		if (PlayerNumber == 1)
-		{
+		//Choose image for current player
+		if (imageType == 1)
 			currentImage = x_image_rescaled;
+		else if (imageType == 2)
+			currentImage = o_image_rescaled;
+		else
+		{
+			MessageBox::Show("Oops something went wrong. Please start a new game");
+		}
 
-			panel->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FormGame::paintEventBackgroundImage);
-			panel->Invalidate();
+		//Call the paint handler to draw either X or 0
+		panel->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FormGame::paintEventBackgroundImage);
+		panel->Invalidate();
 
-			//Check for winner
-			gameStatus = CheckForWinner();
+		//Set the imageType for next player
+		imageType = ((imageType == 1) ? 2 : 1);
+		
+		//Check for winner
+		gameStatus = CheckForWinner();
 
-			if (gameStatus == NOTOVER)
+		
+		if (gameStatus == NOTOVER)
+		{
+			PlayerNumber = ( (PlayerNumber==1) ? 2 : 1 );
+			Marker = ((wcscmp(Marker,L"X") == 0) ? L"O" : L"X");
+			System::String ^ m = gcnew String(Marker);
+
+			this->label1->Text = "Player " + System::Convert::ToString(PlayerNumber) + ", your turn. Put your \"" + m + "\" in one of the boxes";
+		}
+		else if (gameStatus == OVER)
+		{
+			GameOver = 1;
+			this->label1->Text = "Player "  + System::Convert::ToString(PlayerNumber) + " wins the game !!!";
+			if(PlayerNumber==1)
 			{
-				PlayerNumber = 2;
-				this->label1->Text = "Player 2, your turn. Put your \"O\" in one of the boxes";
-			}
-			else if (gameStatus == OVER)
-			{
-				GameOver = 1;
-				this->label1->Text = "Player 1 wins the game !!!";
 				scorePlayer1++;
 				labelScore1->Text = System::Convert::ToString(scorePlayer1);
+
 			}
 			else
 			{
-				GameOver = 1;
-				countSelections = 0;
-				this->label1->Text = "TIE GAME !!!";
+				scorePlayer2++;
+				labelScore2->Text = System::Convert::ToString(scorePlayer2);
+
 			}
-
-
 		}
 		else
 		{
-			currentImage = o_image_rescaled;
-			panel->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FormGame::paintEventBackgroundImage);
-			panel->Invalidate();
-
-			//Check for winner
-			gameStatus = CheckForWinner();
-
-			if (gameStatus == NOTOVER)
-			{
-				PlayerNumber = 1;
-				this->label1->Text = "Player 1, your turn. Put your \"X\" in one of the boxes";
-			}
-			else if (gameStatus == OVER)
-			{
-				GameOver = 1;
-				this->label1->Text = "Player 2 wins the game !!!";
-
-				scorePlayer2++;
-				labelScore2->Text = System::Convert::ToString(scorePlayer2);
-			}
-			else
-			{
-				GameOver = 1;
-				countSelections = 0;
-				this->label1->Text = "TIE GAME !!!";
-			}
+			GameOver = 1;
+			numberOfMoves = 0;
+			this->label1->Text = "TIE GAME !!!";
 		}
 
+
 		
-		//print_board();
 	}
 }
 
@@ -743,7 +919,7 @@ private: System::Void panel_Click(System::Object^  sender, System::EventArgs^  e
 	if ((winningMark == "0") || (winningMark == "X"))
 		return OVER;
 
-	if (countSelections == NUMSQUARES)
+	if (numberOfMoves == NUMSQUARES)
 		return TIE;
 
 	//If the above two wont return OVER OR TIE, return NOT OVER
@@ -828,8 +1004,7 @@ private: System::Void paintEventBackgroundImage(Object^ /*sender*/, System::Wind
 
 	Graphics^ g = e->Graphics;
 	g->DrawImage(currentImage, 0, 0);
-	//if (++eventCount > 0 )
-		//MessageBox::Show("Event fired "+ System::Convert::ToString(eventCount)+ " times");
+	
 }
 
 private: void enable_panels(void)
@@ -884,7 +1059,7 @@ private: System::Void clearLines(Object^ /*sender*/, System::Windows::Forms::Pai
 }
 
 private: System::Void newGameToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-	InitializeGame();
+	NewGame();
 	
 }
 
@@ -918,6 +1093,69 @@ private: System::Void resetScoreToolStripMenuItem_Click(System::Object^  sender,
 	labelScore1->Text = System::Convert::ToString(scorePlayer1);
 	labelScore2->Text = System::Convert::ToString(scorePlayer2);
 
+}
+private: System::Void split2_clicked(System::Object^  sender, System::EventArgs^  e) {
+	MessageBox::Show("Splitpanel1.Panel2 Clicked");
+}
+private: System::Void button_player1_Click(System::Object^  sender, System::EventArgs^  e) {
+	PlayerNumber = 1;
+	panel_xo->Visible = true;
+	label_select_xo->Text = "Player 1, which one would you like X or O?";
+	
+
+}
+
+private: System::Void button_player2_Click(System::Object^  sender, System::EventArgs^  e) {
+	PlayerNumber = 2;
+	panel_xo->Visible = true;
+	label_select_xo->Text = "Player 2, which one would you like X or O?";
+	
+}
+private: System::Void button_x_Click(System::Object^  sender, System::EventArgs^  e) {
+	Marker = L"X";
+	button_start_game->Visible = true;
+	//currentImage = x_image_rescaled;
+	imageType = 1;
+
+	if (PlayerNumber == 1)
+	{
+		label_weapon_1->Text = "X";
+		label_weapon_2->Text = "O";
+	}
+	else
+	{
+		label_weapon_1->Text = "O";
+		label_weapon_2->Text = "X";
+	}
+}
+
+private: System::Void button_o_Click(System::Object^  sender, System::EventArgs^  e) {
+	Marker = L"O";
+	button_start_game->Visible = true;
+	//currentImage = o_image_rescaled;
+	imageType = 2;
+
+
+	if (PlayerNumber == 1)
+	{
+		label_weapon_1->Text = "O";
+		label_weapon_2->Text = "X";
+	}
+	else
+	{
+		label_weapon_1->Text = "X";
+		label_weapon_2->Text = "O";
+	}
+}
+
+private: System::Void button_start_game_Click(System::Object^  sender, System::EventArgs^  e) {
+	splitContainer1->Panel2Collapsed = true;
+	splitContainer1->Panel1Collapsed = false;
+	
+	System::String ^ m = gcnew String(Marker);
+
+	this->label1->Text = "Player " + System::Convert::ToString(PlayerNumber)+ ", your turn. Put your \"" + m +  "\" in one of the boxes";
+	
 }
 };
 }
