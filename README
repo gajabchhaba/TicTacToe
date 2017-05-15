@@ -1,0 +1,9 @@
+This is the classic Tic Tac Toe game writting in Visual C++. Nothing fancy, just
+a working example of creating GUI.
+
+It's a two player game, not one player against computer. 
+
+Game control is mouse - each user takes turn with the mouse
+and puts a X/O in the square of choice.
+
+Questions may be directed to sudhenduraj@gmail.com.
