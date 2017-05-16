@@ -217,7 +217,7 @@ namespace MyTicTacToe {
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				51.51515F)));
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Absolute,
-				111)));
+				113)));
 			this->tableLayoutPanel1->Controls->Add(this->label3, 1, 0);
 			this->tableLayoutPanel1->Controls->Add(this->label2, 0, 1);
 			this->tableLayoutPanel1->Controls->Add(this->label5, 0, 2);
@@ -238,11 +238,11 @@ namespace MyTicTacToe {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(93, 1);
+			this->label3->Location = System::Drawing::Point(92, 1);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(77, 24);
+			this->label3->Size = System::Drawing::Size(85, 24);
 			this->label3->TabIndex = 0;
 			this->label3->Text = L"Player 1";
 			// 
@@ -273,7 +273,7 @@ namespace MyTicTacToe {
 			this->label_weapon_1->AutoSize = true;
 			this->label_weapon_1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label_weapon_1->Location = System::Drawing::Point(93, 99);
+			this->label_weapon_1->Location = System::Drawing::Point(92, 99);
 			this->label_weapon_1->Name = L"label_weapon_1";
 			this->label_weapon_1->Size = System::Drawing::Size(60, 24);
 			this->label_weapon_1->TabIndex = 6;
@@ -284,7 +284,7 @@ namespace MyTicTacToe {
 			this->label_weapon_2->AutoSize = true;
 			this->label_weapon_2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label_weapon_2->Location = System::Drawing::Point(187, 99);
+			this->label_weapon_2->Location = System::Drawing::Point(185, 99);
 			this->label_weapon_2->Name = L"label_weapon_2";
 			this->label_weapon_2->Size = System::Drawing::Size(60, 24);
 			this->label_weapon_2->TabIndex = 7;
@@ -295,7 +295,7 @@ namespace MyTicTacToe {
 			this->labelScore1->AutoSize = true;
 			this->labelScore1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->labelScore1->Location = System::Drawing::Point(93, 50);
+			this->labelScore1->Location = System::Drawing::Point(92, 50);
 			this->labelScore1->Name = L"labelScore1";
 			this->labelScore1->Size = System::Drawing::Size(20, 24);
 			this->labelScore1->TabIndex = 3;
@@ -305,11 +305,11 @@ namespace MyTicTacToe {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(187, 1);
+			this->label4->Location = System::Drawing::Point(185, 1);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(77, 24);
+			this->label4->Size = System::Drawing::Size(85, 24);
 			this->label4->TabIndex = 1;
 			this->label4->Text = L"Player 2";
 			// 
@@ -318,7 +318,7 @@ namespace MyTicTacToe {
 			this->labelScore2->AutoSize = true;
 			this->labelScore2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->labelScore2->Location = System::Drawing::Point(187, 50);
+			this->labelScore2->Location = System::Drawing::Point(185, 50);
 			this->labelScore2->Name = L"labelScore2";
 			this->labelScore2->Size = System::Drawing::Size(20, 24);
 			this->labelScore2->TabIndex = 2;
