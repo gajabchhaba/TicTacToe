@@ -179,7 +179,7 @@ namespace MyTicTacToe {
 			// 
 			// splitContainer1.Panel2
 			// 
-			this->splitContainer1->Panel2->BackColor = System::Drawing::Color::White;
+			this->splitContainer1->Panel2->BackColor = System::Drawing::Color::Orange;
 			this->splitContainer1->Panel2->Controls->Add(this->button_start_game);
 			this->splitContainer1->Panel2->Controls->Add(this->panel_xo);
 			this->splitContainer1->Panel2->Controls->Add(this->label_select);
